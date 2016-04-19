@@ -30,8 +30,7 @@ function handleAuthResult(authResult) {
   if (authResult && !authResult.error) {
     // Hide auth UI, then load client library.
     authorizeDiv.style.display = 'none';
-    //callScriptFunction();
-    //callPumpoutFunction();
+    window.location.href = "/form.html";
   } else {
     // Show auth UI, allowing the user to initiate authorization by
     // clicking authorize button.
@@ -49,10 +48,6 @@ function handleAuthClick(event) {
     {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
     handleAuthResult);
   return false;
-}
-
-function testFunc() {
-    console.log("its working");
 }
 
 function callPumpoutFunction() {
@@ -113,71 +108,6 @@ function callPumpoutFunction() {
           appendPre(folderSet);
         }
       });
-}
-
-/**
- * Calls an Apps Script function to list the folders in the user's
- * root Drive folder.
- */
-function callScriptFunction() {
-
-  // Create an execution request object.
-  var request = {
-      'function': 'getSheet',
-      'devMode' : true,
-      };
-
-  // Make the API request.
-  var op = gapi.client.request({
-      'root': 'https://script.googleapis.com',
-      'path': 'v1/scripts/' + SCRIPT_ID + ':run',
-      'method': 'POST',
-      'body': request
-  });
-
-  op.execute(function(resp) {
-    if (resp.error && resp.error.status) {
-      // The API encountered a problem before the script
-      // started executing.
-      appendPre('Error calling API:');
-      appendPre(JSON.stringify(resp, null, 2));
-    } else if (resp.error) {
-      // The API executed, but the script returned an error.
-
-      // Extract the first (and only) set of error details.
-      // The values of this object are the script's 'errorMessage' and
-      // 'errorType', and an array of stack trace elements.
-      var error = resp.error.details[0];
-      appendPre('Script error message: ' + error.errorMessage);
-
-      if (error.scriptStackTraceElements) {
-        // There may not be a stacktrace if the script didn't start
-        // executing.
-        appendPre('Script error stacktrace:');
-        for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
-          var trace = error.scriptStackTraceElements[i];
-          appendPre('\t' + trace.function + ':' + trace.lineNumber);
-        }
-      }
-    } else {
-      // The structure of the result will depend upon what the Apps
-      // Script function returns. Here, the function returns an Apps
-      // Script Object with String keys and values, and so the result
-      // is treated as a JavaScript object (folderSet).
-      var folderSet = resp.response.result;
-      /*
-      if (Object.keys(folderSet).length == 0) {
-          appendPre('No folders returned!');
-      } else {
-        appendPre('Folders under your root folder:');
-        Object.keys(folderSet).forEach(function(id){
-          appendPre('\t' + folderSet[id] + ' (' + id  + ')');
-        });
-      }
-      */
-      appendPre(folderSet);
-    }
-  });
 }
 
 /**

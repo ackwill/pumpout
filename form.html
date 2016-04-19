@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     <script type="text/javascript" src="pump.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=checkAuth">
-    </script>
-
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"> </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,10 +23,30 @@
     <![endif]-->
   </head>
   <body>
-    <div id="authorize-div" style="display: none" class="container form-signin" align="center">
-        <h2 class="form-signin-heading">Sign in with Google</h2>
-        <!--Button for the user to click to initiate auth sequence -->
-        <button class="btn btn-lg btn-primary btn-block form-signin" id="authorize-button" onclick="handleAuthClick(event)">Sign In</button>
+    <pre id="output"></pre>
+    <div class="container">
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Pumpout Log</h2>
+
+        <input type="text" name="data" id="mooring" class="form-control" placeholder="Mooring">
+
+        <input type="text" name="data" id="side" class="form-control" placeholder="Side">
+
+        <input type="text" name="data" id="name" class="form-control" placeholder="Vessel Name">
+
+        <input type="text" name="data" id="port" class="form-control" placeholder="Home Port">
+
+        <input type="number" name="data" id="length" class="form-control" placeholder="Length">
+
+        <input type="number" name="data" id="pob" class="form-control" placeholder="POB">
+
+        <input type="number" name="data" id="gal" class="form-control" placeholder="Gallons">
+
+      </form>
+      <input class="btn btn-lg btn-primary btn-block form-signin" type="submit" value="Submit" onclick="callPumpoutFunction()">
+
+
     </div> <!-- /container -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
