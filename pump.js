@@ -1,12 +1,12 @@
 // Your Client ID can be retrieved from your project in the Google
 // Developer Console, https://console.developers.google.com
-var CLIENT_ID = '725282832720-s4ojhj9109me82efof9ckspjv90vqpuv.apps.googleusercontent.com';
+var CLIENT_ID = "362878149208-dfs57d9rsl70f9bet7f5a55mu5rfhp6u.apps.googleusercontent.com";
 
 var SCOPES = ['https://www.googleapis.com/auth/drive',
               'https://www.googleapis.com/auth/spreadsheets',
               'https://www.googleapis.com/auth/userinfo.email',];
 
-var SCRIPT_ID = "M0rgzSfuM9Euxa01JgFmJ4OyauSKwSQOx";
+var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
 /**
  * Check if current user has authorized this application.
