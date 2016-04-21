@@ -20,6 +20,11 @@ function checkAuth() {
     }, handleAuthResult);
 }
 
+function fired() {
+    console.log("fired");
+    $("#ddmenu").append("<li><a onclick=\"fired()\">Savage</a></li>");
+}
+
 /**
  * Handle response from authorization server.
  *
