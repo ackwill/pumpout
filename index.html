@@ -31,6 +31,38 @@
         <button class="btn btn-lg btn-primary btn-block form-signin" id="authorize-button" onclick="handleAuthClick(event)">Sign In</button>
     </div> <!-- /container -->
 
+    <div id="submitForm" class="container" style="display: none">
+        <pre id="output"></pre>
+        <form class="form-signin">
+            <select size="1" id="D1"></select>
+
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu" id="ddmenu">  
+                    </ul>
+            </div>
+
+            <h2 class="form-signin-heading">Pumpout Log</h2>
+
+            <input type="text" name="data" id="mooring" class="form-control" placeholder="Mooring">
+
+            <input type="text" name="data" id="side" class="form-control" placeholder="Side">
+
+            <input type="text" name="data" id="name" class="form-control" placeholder="Vessel Name">
+
+            <input type="text" name="data" id="port" class="form-control" placeholder="Home Port">
+
+            <input type="number" name="data" id="length" class="form-control" placeholder="Length">
+
+            <input type="number" name="data" id="pob" class="form-control" placeholder="POB">
+
+            <input type="number" name="data" id="gal" class="form-control" placeholder="Gallons">
+        </form>
+        <input class="btn btn-lg btn-primary btn-block form-signin" type="submit" value="Submit" onclick="callPumpoutFunction()">
+
+    </div> <!-- /container -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

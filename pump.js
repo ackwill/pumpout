@@ -2,15 +2,16 @@
 // Developer Console, https://console.developers.google.com
 var CLIENT_ID = "362878149208-dfs57d9rsl70f9bet7f5a55mu5rfhp6u.apps.googleusercontent.com";
 
-var SCOPES = ['https://www.googleapis.com/auth/drive',
-              'https://www.googleapis.com/auth/spreadsheets',
-              'https://www.googleapis.com/auth/userinfo.email',];
+var SCOPES = ["https://www.googleapis.com/auth/drive",
+"https://www.googleapis.com/auth/plus.login",
+"https://www.googleapis.com/auth/plus.profile.emails.read",
+"https://www.googleapis.com/auth/spreadsheets"];
 
 var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
 /**
- * Check if current user has authorized this application.
- */
+* Check if current user has authorized this application.
+*/
 function checkAuth() {
   gapi.auth.authorize(
     {
@@ -18,69 +19,135 @@ function checkAuth() {
       'scope': SCOPES.join(' '),
       'immediate': true
     }, handleAuthResult);
-}
+  }
 
-function fired() {
+  function fired() {
     console.log("fired");
     $("#ddmenu").append("<li><a onclick=\"fired()\">Savage</a></li>");
-}
-
-/**
- * Handle response from authorization server.
- *
- * @param {Object} authResult Authorization result.
- */
-function handleAuthResult(authResult) {
-  var authorizeDiv = document.getElementById('authorize-div');
-  if (authResult && !authResult.error) {
-    // Hide auth UI, then load client library.
-    authorizeDiv.style.display = 'none';
-    window.location.href = "/form.html";
-  } else {
-    // Show auth UI, allowing the user to initiate authorization by
-    // clicking authorize button.
-    authorizeDiv.style.display = 'inline';
   }
-}
 
-/**
- * Initiate auth flow in response to user clicking authorize button.
- *
- * @param {Event} event Button click event.
- */
-function handleAuthClick(event) {
-  gapi.auth.authorize(
-    {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-    handleAuthResult);
-  return false;
-}
+  function autofill(id) {
+    var request = {
+      'function': 'getDataFromIndex',
+      'parameters': [
+        id,
+        10
+      ],
+      'devMode' : true,
+    };
 
-function callPumpoutFunction() {
+    // Make the API request.
+    var op = gapi.client.request({
+      'root': 'https://script.googleapis.com',
+      'path': 'v1/scripts/' + SCRIPT_ID + ':run',
+      'method': 'POST',
+      'body': request
+    });
 
-      // Create an execution request object.
+    op.execute(function(resp) {
+      if (resp.error) {
+        appendPre("Failed to Load Saved Data");
+      } else {
+        var response = resp.response.result;
+
+        var field = document.getElementsByName("data");
+
+        for(var i=0; i < response.length; i++) {
+          field[i].value = response[i];
+        }
+      }
+    });
+  }
+
+  function populateDropdown() {
+    var request = {
+      'function': 'getRecent',
+      'parameters': [
+        10,
+      ],
+      'devMode' : true,
+    };
+
+    // Make the API request.
+    var op = gapi.client.request({
+      'root': 'https://script.googleapis.com',
+      'path': 'v1/scripts/' + SCRIPT_ID + ':run',
+      'method': 'POST',
+      'body': request
+    });
+
+    op.execute(function(resp) {
+      if (resp.error) {
+        appendPre("Failed to load names");
+      } else {
+
+        var response = resp.response.result;
+
+        for(var i=0; i < response.length; i++) {
+          $("#ddmenu").append("<li><a onclick=\"autofill(" + i + ")\">" + response[i] + "</a></li>");
+        }
+        appendPre("names loaded");
+      }
+    });
+  }
+
+  /**
+  * Handle response from authorization server.
+  *
+  * @param {Object} authResult Authorization result.
+  */
+  function handleAuthResult(authResult) {
+    var authorizeDiv = document.getElementById("authorize-div");
+    var formDiv = document.getElementById("submitForm");
+    if (authResult && !authResult.error) {
+      // Hide auth UI, then load client library.
+      authorizeDiv.style.display = "none";
+      formDiv.style.display = "inline";
+      populateDropdown();
+    } else {
+      // Show auth UI, allowing the user to initiate authorization by
+      // clicking authorize button.
+      authorizeDiv.style.display = "inliner";
+    }
+  }
+
+  /**
+  * Initiate auth flow in response to user clicking authorize button.
+  *
+  * @param {Event} event Button click event.
+  */
+  function handleAuthClick(event) {
+    gapi.auth.authorize(
+      {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+      handleAuthResult);
+      return false;
+    }
+
+    function callPumpoutFunction(ignore) {
 
       var data = document.getElementsByName("data");
 
       var request = {
-          'function': 'appendPumpout',
-          'parameters': [
-              data[0].value,
-              data[1].value,
-              data[2].value,
-              data[3].value,
-              data[4].value,
-              data[5].value,
-              data[6].value,
-          ],
-          'devMode' : true,
-          };
+        'function': 'appendPumpout',
+        'parameters': [
+          data[0].value,
+          data[1].value,
+          data[2].value,
+          data[3].value,
+          data[4].value,
+          data[5].value,
+          data[6].value,
+          ignore,
+        ],
+        'devMode' : true,
+      };
 
       // Make the API request.
       var op = gapi.client.request({
-          'root': 'https://script.googleapis.com',
-          'path': 'v1/scripts/' + SCRIPT_ID + ':run',
-          'method': 'POST',
-          'body': request
+        'root': 'https://script.googleapis.com',
+        'path': 'v1/scripts/' + SCRIPT_ID + ':run',
+        'method': 'POST',
+        'body': request
       });
 
       op.execute(function(resp) {
@@ -113,16 +180,16 @@ function callPumpoutFunction() {
           appendPre(folderSet);
         }
       });
-}
+    }
 
-/**
- * Append a pre element to the body containing the given message
- * as its text node.
- *
- * @param {string} message Text to be placed in pre element.
- */
-function appendPre(message) {
-  var pre = document.getElementById('output');
-  var textContent = document.createTextNode(message + '\n');
-  pre.appendChild(textContent);
-}
+    /**
+    * Append a pre element to the body containing the given message
+    * as its text node.
+    *
+    * @param {string} message Text to be placed in pre element.
+    */
+    function appendPre(message) {
+      var pre = document.getElementById('output');
+      var textContent = document.createTextNode(message + '\n');
+      pre.appendChild(textContent);
+    }
