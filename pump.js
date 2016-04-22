@@ -8,7 +8,7 @@ var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
 var SAVE_RANGE = -1; // normally 10, -1 is all of the data
 
-var DEBUG = true;
+var DEBUG = false;
 
 /**
 * Check if current user has authorized this application.
@@ -184,6 +184,6 @@ function appendOutputDiv(message) {
     if(DEBUG) {
         pre.appendChild(textContent);
     } else {
-        //pre.textContent = message + "\n";
+        pre.textContent = message + "\n";
     }
 }
