@@ -36,7 +36,7 @@ function autofill(id) {
             id,
             SAVE_RANGE,
         ],
-        'devMode' : false,
+        //'devMode' : true,
     };
 
     // Make the API request.
@@ -103,7 +103,7 @@ function populateDropdown() {
         'parameters': [
             SAVE_RANGE,
         ],
-        'devMode' : false,
+        //'devMode' : true,
     };
 
     // Make the API request.
@@ -115,8 +115,29 @@ function populateDropdown() {
     });
 
     op.execute(function(resp) {
-        if (resp.error) {
-            appendPre("Failed to load names");
+        if (resp.error && resp.error.status) {
+            // The API encountered a problem before the script
+            // started executing.
+            appendPre('Error calling API:');
+            appendPre(JSON.stringify(resp, null, 2));
+        } else if (resp.error) {
+            // The API executed, but the script returned an error.
+
+            // Extract the first (and only) set of error details.
+            // The values of this object are the script's 'errorMessage' and
+            // 'errorType', and an array of stack trace elements.
+            var error = resp.error.details[0];
+            appendPre('Script error message: ' + error.errorMessage);
+
+            if (error.scriptStackTraceElements) {
+                // There may not be a stacktrace if the script didn't start
+                // executing.
+                appendPre('Script error stacktrace:');
+                for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
+                    var trace = error.scriptStackTraceElements[i];
+                    appendPre('\t' + trace.function + ':' + trace.lineNumber);
+                }
+            }
         } else {
 
             var response = resp.response.result;
@@ -179,7 +200,7 @@ function callPumpoutFunction() {
             data[5].value,
             data[6].value,
         ],
-        'devMode' : false,
+        //'devMode' : true,
     };
 
     // Make the API request.
