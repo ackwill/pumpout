@@ -9,6 +9,8 @@ var SCOPES = ["https://www.googleapis.com/auth/drive",
 
 var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
+var SAVE_RANGE = -1; // normally 10
+
 var savednames = [];
 
 /**
@@ -32,9 +34,9 @@ function autofill(id) {
         'function': 'getDataFromIndex',
         'parameters': [
             id,
-            10
+            SAVE_RANGE,
         ],
-        'devMode' : true,
+        'devMode' : false,
     };
 
     // Make the API request.
@@ -99,9 +101,9 @@ function populateDropdown() {
     var request = {
         'function': 'getRecent',
         'parameters': [
-            10,
+            SAVE_RANGE,
         ],
-        'devMode' : true,
+        'devMode' : false,
     };
 
     // Make the API request.
@@ -162,7 +164,7 @@ function handleAuthClick(event) {
     return false;
 }
 
-function callPumpoutFunction(ignore) {
+function callPumpoutFunction() {
 
     var data = document.getElementsByName("data");
 
@@ -176,9 +178,8 @@ function callPumpoutFunction(ignore) {
             data[4].value,
             data[5].value,
             data[6].value,
-            ignore,
         ],
-        'devMode' : true,
+        'devMode' : false,
     };
 
     // Make the API request.
