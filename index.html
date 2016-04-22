@@ -29,21 +29,19 @@
         <h2 class="form-signin-heading">Sign in with Google</h2>
         <!--Button for the user to click to initiate auth sequence -->
         <button class="btn btn-lg btn-primary btn-block form-signin" id="authorize-button" onclick="handleAuthClick(event)">Sign In</button>
-    </div> <!-- /container -->
+    </div>
 
     <div id="submitForm" class="container" style="display: none">
-        <pre id="output"></pre>
         <form class="form-signin">
-            <select size="1" id="D1"></select>
+            <pre id="output"></pre>
 
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown">Saved Boats
                     <span class="caret"></span></button>
-                    <ul class="dropdown-menu" id="ddmenu">
-                    </ul>
+                    <ul class="dropdown-menu btn-block" id="ddmenu"></ul>
             </div>
 
-            <h2 class="form-signin-heading">Pumpout Log</h2>
+            <h2 class="form-signin-heading" align="center">Pumpout Log</h2>
 
             <input type="text" name="data" id="mooring" class="form-control" placeholder="Mooring">
 

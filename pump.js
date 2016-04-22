@@ -2,10 +2,9 @@
 // Developer Console, https://console.developers.google.com
 var CLIENT_ID = "362878149208-dfs57d9rsl70f9bet7f5a55mu5rfhp6u.apps.googleusercontent.com";
 
-var SCOPES = ["https://www.googleapis.com/auth/drive",
-"https://www.googleapis.com/auth/plus.login",
-"https://www.googleapis.com/auth/plus.profile.emails.read",
-"https://www.googleapis.com/auth/spreadsheets"];
+var SCOPES = ["https://www.googleapis.com/auth/plus.login",
+              "https://www.googleapis.com/auth/plus.profile.emails.read",
+              "https://www.googleapis.com/auth/spreadsheets"];
 
 var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
@@ -51,8 +50,8 @@ function autofill(id) {
         if (resp.error && resp.error.status) {
             // The API encountered a problem before the script
             // started executing.
-            appendPre('Error calling API:');
-            appendPre(JSON.stringify(resp, null, 2));
+            appendOutputDiv('Error calling API:');
+            appendOutputDiv(JSON.stringify(resp, null, 2));
         } else if (resp.error) {
             // The API executed, but the script returned an error.
 
@@ -60,15 +59,15 @@ function autofill(id) {
             // The values of this object are the script's 'errorMessage' and
             // 'errorType', and an array of stack trace elements.
             var error = resp.error.details[0];
-            appendPre('Script error message: ' + error.errorMessage);
+            appendOutputDiv('Script error message: ' + error.errorMessage);
 
             if (error.scriptStackTraceElements) {
                 // There may not be a stacktrace if the script didn't start
                 // executing.
-                appendPre('Script error stacktrace:');
+                appendOutputDiv('Script error stacktrace:');
                 for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
                     var trace = error.scriptStackTraceElements[i];
-                    appendPre('\t' + trace.function + ':' + trace.lineNumber);
+                    appendOutputDiv('\t' + trace.function + ':' + trace.lineNumber);
                 }
             }
         } else {
@@ -118,8 +117,8 @@ function populateDropdown() {
         if (resp.error && resp.error.status) {
             // The API encountered a problem before the script
             // started executing.
-            appendPre('Error calling API:');
-            appendPre(JSON.stringify(resp, null, 2));
+            appendOutputDiv('Error calling API:');
+            appendOutputDiv(JSON.stringify(resp, null, 2));
         } else if (resp.error) {
             // The API executed, but the script returned an error.
 
@@ -127,15 +126,15 @@ function populateDropdown() {
             // The values of this object are the script's 'errorMessage' and
             // 'errorType', and an array of stack trace elements.
             var error = resp.error.details[0];
-            appendPre('Script error message: ' + error.errorMessage);
+            appendOutputDiv('Script error message: ' + error.errorMessage);
 
             if (error.scriptStackTraceElements) {
                 // There may not be a stacktrace if the script didn't start
                 // executing.
-                appendPre('Script error stacktrace:');
+                appendOutputDiv('Script error stacktrace:');
                 for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
                     var trace = error.scriptStackTraceElements[i];
-                    appendPre('\t' + trace.function + ':' + trace.lineNumber);
+                    appendOutputDiv('\t' + trace.function + ':' + trace.lineNumber);
                 }
             }
         } else {
@@ -147,7 +146,7 @@ function populateDropdown() {
             for(var i=0; i < response.length; i++) {
                 $("#ddmenu").append("<li><a onclick=\"autofill(" + i + ")\">" + response[i] + "</a></li>");
             }
-            appendPre("names loaded");
+            appendOutputDiv("names loaded");
         }
     });
 }
@@ -215,8 +214,8 @@ function callPumpoutFunction() {
         if (resp.error && resp.error.status) {
             // The API encountered a problem before the script
             // started executing.
-            appendPre('Error calling API:');
-            appendPre(JSON.stringify(resp, null, 2));
+            appendOutputDiv('Error calling API:');
+            appendOutputDiv(JSON.stringify(resp, null, 2));
         } else if (resp.error) {
             // The API executed, but the script returned an error.
 
@@ -224,21 +223,21 @@ function callPumpoutFunction() {
             // The values of this object are the script's 'errorMessage' and
             // 'errorType', and an array of stack trace elements.
             var error = resp.error.details[0];
-            appendPre('Script error message: ' + error.errorMessage);
+            appendOutputDiv('Script error message: ' + error.errorMessage);
 
             if (error.scriptStackTraceElements) {
                 // There may not be a stacktrace if the script didn't start
                 // executing.
-                appendPre('Script error stacktrace:');
+                appendOutputDiv('Script error stacktrace:');
                 for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
                     var trace = error.scriptStackTraceElements[i];
-                    appendPre('\t' + trace.function + ':' + trace.lineNumber);
+                    appendOutputDiv('\t' + trace.function + ':' + trace.lineNumber);
                 }
             }
         } else {
 
             var folderSet = resp.response.result;
-            appendPre(folderSet);
+            appendOutputDiv(folderSet);
         }
     });
 }
@@ -249,8 +248,9 @@ function callPumpoutFunction() {
 *
 * @param {string} message Text to be placed in pre element.
 */
-function appendPre(message) {
+function appendOutputDiv(message) {
     var pre = document.getElementById('output');
     var textContent = document.createTextNode(message + '\n');
-    pre.appendChild(textContent);
+    //pre.appendChild(textContent);
+    pre.textContent = message + "\n";
 }
