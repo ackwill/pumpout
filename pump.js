@@ -1,6 +1,7 @@
 var CLIENT_ID = "362878149208-dfs57d9rsl70f9bet7f5a55mu5rfhp6u.apps.googleusercontent.com";
 
-var SCOPES = ["https://www.googleapis.com/auth/plus.login",
+var SCOPES = ["https://www.google.com/calendar/feeds",
+              "https://www.googleapis.com/auth/plus.login",
               "https://www.googleapis.com/auth/plus.profile.emails.read",
               "https://www.googleapis.com/auth/spreadsheets"];
 
@@ -8,7 +9,7 @@ var SCRIPT_ID = "M6VwDp8tq5aObkqmMh7xb8ZSCr23GME13";
 
 var SAVE_RANGE = -1; // normally 10, -1 is all of the data
 
-var DEBUG = false;
+var DEBUG = true;
 
 /**
 * Check if current user has authorized this application.
@@ -140,6 +141,10 @@ function callPumpoutFunction() {
         if(!parseAPIResponse(resp)) {
             var post_stats = resp.response.result;
             appendOutputDiv(post_stats);
+            var field = document.getElementsByName("data");
+            for(var i=0; i < field.length; i++) {
+                field[i].value = "";
+            }
         }
     });
 }
